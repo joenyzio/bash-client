@@ -1,4 +1,4 @@
-# Dynamic API Specification Bash client
+# Empress API Specification Bash client
 
 ## Overview
 
