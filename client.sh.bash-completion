@@ -1,0 +1,1842 @@
+#  completion                               -*- shell-script -*-
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !
+# ! Note:
+# !
+# ! THIS SCRIPT HAS BEEN AUTOMATICALLY GENERATED USING
+# ! openapi-generator (https://openapi-generator.tech)
+# ! FROM OPENAPI SPECIFICATION IN JSON.
+# !
+# !
+# !
+# ! System wide installation:
+# !
+# ! $ sudo cp .bash-completion /etc/bash-completion.d/
+# !
+# !
+# ! User home installation (add this line to .bash_profile):
+# !
+# ! [ -r ~/.bash-completion ] && source ~/.bash-completion
+# !
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+declare -A mime_type_abbreviations
+# text/*
+mime_type_abbreviations["text"]="text/plain"
+mime_type_abbreviations["html"]="text/html"
+mime_type_abbreviations["md"]="text/x-markdown"
+mime_type_abbreviations["csv"]="text/csv"
+mime_type_abbreviations["css"]="text/css"
+mime_type_abbreviations["rtf"]="text/rtf"
+# application/*
+mime_type_abbreviations["json"]="application/json"
+mime_type_abbreviations["xml"]="application/xml"
+mime_type_abbreviations["yaml"]="application/yaml"
+mime_type_abbreviations["js"]="application/javascript"
+mime_type_abbreviations["bin"]="application/octet-stream"
+mime_type_abbreviations["rdf"]="application/rdf+xml"
+# image/*
+mime_type_abbreviations["jpg"]="image/jpeg"
+mime_type_abbreviations["png"]="image/png"
+mime_type_abbreviations["gif"]="image/gif"
+mime_type_abbreviations["bmp"]="image/bmp"
+mime_type_abbreviations["tiff"]="image/tiff"
+
+
+#
+# Check if this is OSX, if so defined custom init_completion
+#
+if [[ `uname` =~ "Darwin" ]]; then
+    __osx_init_completion()
+    {
+        COMPREPLY=()
+        _get_comp_words_by_ref cur prev words cword
+    }
+fi
+
+_()
+{
+    local cur
+    local prev
+    local words
+    local cword
+
+    # The reference of currently selected REST operation
+    local operation=""
+
+    # The list of available operation in the REST service
+    # It's modelled as an associative array for efficient key lookup
+    declare -A operations
+    operations["createComment"]=1
+    operations["getActivities"]=1
+    operations["getActivity"]=1
+    operations["getAsset"]=1
+    operations["login"]=1
+    operations["logout"]=1
+    operations["oauth"]=1
+    operations["oauthProvider"]=1
+    operations["passwordRequest"]=1
+    operations["passwordReset"]=1
+    operations["refresh"]=1
+    operations["getCollection"]=1
+    operations["getCollections"]=1
+    operations["getDisplays"]=1
+    operations["getInterfaces"]=1
+    operations["getLayouts"]=1
+    operations["getModules"]=1
+    operations["getCollectionField"]=1
+    operations["getCollectionFields"]=1
+    operations["getFields"]=1
+    operations["createFile"]=1
+    operations["deleteFile"]=1
+    operations["deleteFiles"]=1
+    operations["getFile"]=1
+    operations["getFiles"]=1
+    operations["updateFile"]=1
+    operations["updateFiles"]=1
+    operations["getFlow"]=1
+    operations["getFlows"]=1
+    operations["createFolder"]=1
+    operations["deleteFolder"]=1
+    operations["deleteFolders"]=1
+    operations["getFolder"]=1
+    operations["getFolders"]=1
+    operations["updateFolder"]=1
+    operations["updateFolders"]=1
+    operations["createItemsAccounts"]=1
+    operations["createItemsAppointments"]=1
+    operations["createItemsBudgets"]=1
+    operations["createItemsCampaigns"]=1
+    operations["createItemsCarbonFootprint"]=1
+    operations["createItemsCompanyAssets"]=1
+    operations["createItemsContent"]=1
+    operations["createItemsContracts"]=1
+    operations["createItemsCrm"]=1
+    operations["createItemsDepartment"]=1
+    operations["createItemsDistribution"]=1
+    operations["createItemsEmailCampaigns"]=1
+    operations["createItemsEmployeeDirectory"]=1
+    operations["createItemsEnergyEfficiency"]=1
+    operations["createItemsEnvironmentalCompliance"]=1
+    operations["createItemsEvents"]=1
+    operations["createItemsExpenses"]=1
+    operations["createItemsFacilities"]=1
+    operations["createItemsFeedback"]=1
+    operations["createItemsForum"]=1
+    operations["createItemsFulfillment"]=1
+    operations["createItemsGovernanceandEthics"]=1
+    operations["createItemsHelpdesk"]=1
+    operations["createItemsInventory"]=1
+    operations["createItemsInvoices"]=1
+    operations["createItemsInvoicing"]=1
+    operations["createItemsLifecycle"]=1
+    operations["createItemsLiveChat"]=1
+    operations["createItemsLoyalty"]=1
+    operations["createItemsMaintenance"]=1
+    operations["createItemsPayroll"]=1
+    operations["createItemsPerformance"]=1
+    operations["createItemsPointofSale"]=1
+    operations["createItemsPolicy"]=1
+    operations["createItemsProcurement"]=1
+    operations["createItemsProductionBatch"]=1
+    operations["createItemsProject"]=1
+    operations["createItemsPurchaseOrders"]=1
+    operations["createItemsQualityCheck"]=1
+    operations["createItemsQuotes"]=1
+    operations["createItemsRecruit"]=1
+    operations["createItemsRegulations"]=1
+    operations["createItemsRentals"]=1
+    operations["createItemsShipment"]=1
+    operations["createItemsSocialMedia"]=1
+    operations["createItemsSocialResponsibility"]=1
+    operations["createItemsSuppliers"]=1
+    operations["createItemsSurveys"]=1
+    operations["createItemsSustainableSupplyChain"]=1
+    operations["createItemsTaxes"]=1
+    operations["createItemsTraining"]=1
+    operations["createItemsTransactions"]=1
+    operations["deleteItemsAccounts"]=1
+    operations["deleteItemsAppointments"]=1
+    operations["deleteItemsBudgets"]=1
+    operations["deleteItemsCampaigns"]=1
+    operations["deleteItemsCarbonFootprint"]=1
+    operations["deleteItemsCompanyAssets"]=1
+    operations["deleteItemsContent"]=1
+    operations["deleteItemsContracts"]=1
+    operations["deleteItemsCrm"]=1
+    operations["deleteItemsDepartment"]=1
+    operations["deleteItemsDistribution"]=1
+    operations["deleteItemsEmailCampaigns"]=1
+    operations["deleteItemsEmployeeDirectory"]=1
+    operations["deleteItemsEnergyEfficiency"]=1
+    operations["deleteItemsEnvironmentalCompliance"]=1
+    operations["deleteItemsEvents"]=1
+    operations["deleteItemsExpenses"]=1
+    operations["deleteItemsFacilities"]=1
+    operations["deleteItemsFeedback"]=1
+    operations["deleteItemsForum"]=1
+    operations["deleteItemsFulfillment"]=1
+    operations["deleteItemsGovernanceandEthics"]=1
+    operations["deleteItemsHelpdesk"]=1
+    operations["deleteItemsInventory"]=1
+    operations["deleteItemsInvoices"]=1
+    operations["deleteItemsInvoicing"]=1
+    operations["deleteItemsLifecycle"]=1
+    operations["deleteItemsLiveChat"]=1
+    operations["deleteItemsLoyalty"]=1
+    operations["deleteItemsMaintenance"]=1
+    operations["deleteItemsPayroll"]=1
+    operations["deleteItemsPerformance"]=1
+    operations["deleteItemsPointofSale"]=1
+    operations["deleteItemsPolicy"]=1
+    operations["deleteItemsProcurement"]=1
+    operations["deleteItemsProductionBatch"]=1
+    operations["deleteItemsProject"]=1
+    operations["deleteItemsPurchaseOrders"]=1
+    operations["deleteItemsQualityCheck"]=1
+    operations["deleteItemsQuotes"]=1
+    operations["deleteItemsRecruit"]=1
+    operations["deleteItemsRegulations"]=1
+    operations["deleteItemsRentals"]=1
+    operations["deleteItemsShipment"]=1
+    operations["deleteItemsSocialMedia"]=1
+    operations["deleteItemsSocialResponsibility"]=1
+    operations["deleteItemsSuppliers"]=1
+    operations["deleteItemsSurveys"]=1
+    operations["deleteItemsSustainableSupplyChain"]=1
+    operations["deleteItemsTaxes"]=1
+    operations["deleteItemsTraining"]=1
+    operations["deleteItemsTransactions"]=1
+    operations["deleteSingleItemsAccounts"]=1
+    operations["deleteSingleItemsAppointments"]=1
+    operations["deleteSingleItemsBudgets"]=1
+    operations["deleteSingleItemsCampaigns"]=1
+    operations["deleteSingleItemsCarbonFootprint"]=1
+    operations["deleteSingleItemsCompanyAssets"]=1
+    operations["deleteSingleItemsContent"]=1
+    operations["deleteSingleItemsContracts"]=1
+    operations["deleteSingleItemsCrm"]=1
+    operations["deleteSingleItemsDepartment"]=1
+    operations["deleteSingleItemsDistribution"]=1
+    operations["deleteSingleItemsEmailCampaigns"]=1
+    operations["deleteSingleItemsEmployeeDirectory"]=1
+    operations["deleteSingleItemsEnergyEfficiency"]=1
+    operations["deleteSingleItemsEnvironmentalCompliance"]=1
+    operations["deleteSingleItemsEvents"]=1
+    operations["deleteSingleItemsExpenses"]=1
+    operations["deleteSingleItemsFacilities"]=1
+    operations["deleteSingleItemsFeedback"]=1
+    operations["deleteSingleItemsForum"]=1
+    operations["deleteSingleItemsFulfillment"]=1
+    operations["deleteSingleItemsGovernanceandEthics"]=1
+    operations["deleteSingleItemsHelpdesk"]=1
+    operations["deleteSingleItemsInventory"]=1
+    operations["deleteSingleItemsInvoices"]=1
+    operations["deleteSingleItemsInvoicing"]=1
+    operations["deleteSingleItemsLifecycle"]=1
+    operations["deleteSingleItemsLiveChat"]=1
+    operations["deleteSingleItemsLoyalty"]=1
+    operations["deleteSingleItemsMaintenance"]=1
+    operations["deleteSingleItemsPayroll"]=1
+    operations["deleteSingleItemsPerformance"]=1
+    operations["deleteSingleItemsPointofSale"]=1
+    operations["deleteSingleItemsPolicy"]=1
+    operations["deleteSingleItemsProcurement"]=1
+    operations["deleteSingleItemsProductionBatch"]=1
+    operations["deleteSingleItemsProject"]=1
+    operations["deleteSingleItemsPurchaseOrders"]=1
+    operations["deleteSingleItemsQualityCheck"]=1
+    operations["deleteSingleItemsQuotes"]=1
+    operations["deleteSingleItemsRecruit"]=1
+    operations["deleteSingleItemsRegulations"]=1
+    operations["deleteSingleItemsRentals"]=1
+    operations["deleteSingleItemsShipment"]=1
+    operations["deleteSingleItemsSocialMedia"]=1
+    operations["deleteSingleItemsSocialResponsibility"]=1
+    operations["deleteSingleItemsSuppliers"]=1
+    operations["deleteSingleItemsSurveys"]=1
+    operations["deleteSingleItemsSustainableSupplyChain"]=1
+    operations["deleteSingleItemsTaxes"]=1
+    operations["deleteSingleItemsTraining"]=1
+    operations["deleteSingleItemsTransactions"]=1
+    operations["readItemsAccounts"]=1
+    operations["readItemsAppointments"]=1
+    operations["readItemsBudgets"]=1
+    operations["readItemsCampaigns"]=1
+    operations["readItemsCarbonFootprint"]=1
+    operations["readItemsCompanyAssets"]=1
+    operations["readItemsContent"]=1
+    operations["readItemsContracts"]=1
+    operations["readItemsCrm"]=1
+    operations["readItemsDepartment"]=1
+    operations["readItemsDistribution"]=1
+    operations["readItemsEmailCampaigns"]=1
+    operations["readItemsEmployeeDirectory"]=1
+    operations["readItemsEnergyEfficiency"]=1
+    operations["readItemsEnvironmentalCompliance"]=1
+    operations["readItemsEvents"]=1
+    operations["readItemsExpenses"]=1
+    operations["readItemsFacilities"]=1
+    operations["readItemsFeedback"]=1
+    operations["readItemsForum"]=1
+    operations["readItemsFulfillment"]=1
+    operations["readItemsGovernanceandEthics"]=1
+    operations["readItemsHelpdesk"]=1
+    operations["readItemsInventory"]=1
+    operations["readItemsInvoices"]=1
+    operations["readItemsInvoicing"]=1
+    operations["readItemsLifecycle"]=1
+    operations["readItemsLiveChat"]=1
+    operations["readItemsLoyalty"]=1
+    operations["readItemsMaintenance"]=1
+    operations["readItemsPayroll"]=1
+    operations["readItemsPerformance"]=1
+    operations["readItemsPointofSale"]=1
+    operations["readItemsPolicy"]=1
+    operations["readItemsProcurement"]=1
+    operations["readItemsProductionBatch"]=1
+    operations["readItemsProject"]=1
+    operations["readItemsPurchaseOrders"]=1
+    operations["readItemsQualityCheck"]=1
+    operations["readItemsQuotes"]=1
+    operations["readItemsRecruit"]=1
+    operations["readItemsRegulations"]=1
+    operations["readItemsRentals"]=1
+    operations["readItemsShipment"]=1
+    operations["readItemsSocialMedia"]=1
+    operations["readItemsSocialResponsibility"]=1
+    operations["readItemsSuppliers"]=1
+    operations["readItemsSurveys"]=1
+    operations["readItemsSustainableSupplyChain"]=1
+    operations["readItemsTaxes"]=1
+    operations["readItemsTraining"]=1
+    operations["readItemsTransactions"]=1
+    operations["readSingleItemsAccounts"]=1
+    operations["readSingleItemsAppointments"]=1
+    operations["readSingleItemsBudgets"]=1
+    operations["readSingleItemsCampaigns"]=1
+    operations["readSingleItemsCarbonFootprint"]=1
+    operations["readSingleItemsCompanyAssets"]=1
+    operations["readSingleItemsContent"]=1
+    operations["readSingleItemsContracts"]=1
+    operations["readSingleItemsCrm"]=1
+    operations["readSingleItemsDepartment"]=1
+    operations["readSingleItemsDistribution"]=1
+    operations["readSingleItemsEmailCampaigns"]=1
+    operations["readSingleItemsEmployeeDirectory"]=1
+    operations["readSingleItemsEnergyEfficiency"]=1
+    operations["readSingleItemsEnvironmentalCompliance"]=1
+    operations["readSingleItemsEvents"]=1
+    operations["readSingleItemsExpenses"]=1
+    operations["readSingleItemsFacilities"]=1
+    operations["readSingleItemsFeedback"]=1
+    operations["readSingleItemsForum"]=1
+    operations["readSingleItemsFulfillment"]=1
+    operations["readSingleItemsGovernanceandEthics"]=1
+    operations["readSingleItemsHelpdesk"]=1
+    operations["readSingleItemsInventory"]=1
+    operations["readSingleItemsInvoices"]=1
+    operations["readSingleItemsInvoicing"]=1
+    operations["readSingleItemsLifecycle"]=1
+    operations["readSingleItemsLiveChat"]=1
+    operations["readSingleItemsLoyalty"]=1
+    operations["readSingleItemsMaintenance"]=1
+    operations["readSingleItemsPayroll"]=1
+    operations["readSingleItemsPerformance"]=1
+    operations["readSingleItemsPointofSale"]=1
+    operations["readSingleItemsPolicy"]=1
+    operations["readSingleItemsProcurement"]=1
+    operations["readSingleItemsProductionBatch"]=1
+    operations["readSingleItemsProject"]=1
+    operations["readSingleItemsPurchaseOrders"]=1
+    operations["readSingleItemsQualityCheck"]=1
+    operations["readSingleItemsQuotes"]=1
+    operations["readSingleItemsRecruit"]=1
+    operations["readSingleItemsRegulations"]=1
+    operations["readSingleItemsRentals"]=1
+    operations["readSingleItemsShipment"]=1
+    operations["readSingleItemsSocialMedia"]=1
+    operations["readSingleItemsSocialResponsibility"]=1
+    operations["readSingleItemsSuppliers"]=1
+    operations["readSingleItemsSurveys"]=1
+    operations["readSingleItemsSustainableSupplyChain"]=1
+    operations["readSingleItemsTaxes"]=1
+    operations["readSingleItemsTraining"]=1
+    operations["readSingleItemsTransactions"]=1
+    operations["updateItemsAccounts"]=1
+    operations["updateItemsAppointments"]=1
+    operations["updateItemsBudgets"]=1
+    operations["updateItemsCampaigns"]=1
+    operations["updateItemsCarbonFootprint"]=1
+    operations["updateItemsCompanyAssets"]=1
+    operations["updateItemsContent"]=1
+    operations["updateItemsContracts"]=1
+    operations["updateItemsCrm"]=1
+    operations["updateItemsDepartment"]=1
+    operations["updateItemsDistribution"]=1
+    operations["updateItemsEmailCampaigns"]=1
+    operations["updateItemsEmployeeDirectory"]=1
+    operations["updateItemsEnergyEfficiency"]=1
+    operations["updateItemsEnvironmentalCompliance"]=1
+    operations["updateItemsEvents"]=1
+    operations["updateItemsExpenses"]=1
+    operations["updateItemsFacilities"]=1
+    operations["updateItemsFeedback"]=1
+    operations["updateItemsForum"]=1
+    operations["updateItemsFulfillment"]=1
+    operations["updateItemsGovernanceandEthics"]=1
+    operations["updateItemsHelpdesk"]=1
+    operations["updateItemsInventory"]=1
+    operations["updateItemsInvoices"]=1
+    operations["updateItemsInvoicing"]=1
+    operations["updateItemsLifecycle"]=1
+    operations["updateItemsLiveChat"]=1
+    operations["updateItemsLoyalty"]=1
+    operations["updateItemsMaintenance"]=1
+    operations["updateItemsPayroll"]=1
+    operations["updateItemsPerformance"]=1
+    operations["updateItemsPointofSale"]=1
+    operations["updateItemsPolicy"]=1
+    operations["updateItemsProcurement"]=1
+    operations["updateItemsProductionBatch"]=1
+    operations["updateItemsProject"]=1
+    operations["updateItemsPurchaseOrders"]=1
+    operations["updateItemsQualityCheck"]=1
+    operations["updateItemsQuotes"]=1
+    operations["updateItemsRecruit"]=1
+    operations["updateItemsRegulations"]=1
+    operations["updateItemsRentals"]=1
+    operations["updateItemsShipment"]=1
+    operations["updateItemsSocialMedia"]=1
+    operations["updateItemsSocialResponsibility"]=1
+    operations["updateItemsSuppliers"]=1
+    operations["updateItemsSurveys"]=1
+    operations["updateItemsSustainableSupplyChain"]=1
+    operations["updateItemsTaxes"]=1
+    operations["updateItemsTraining"]=1
+    operations["updateItemsTransactions"]=1
+    operations["updateSingleItemsAccounts"]=1
+    operations["updateSingleItemsAppointments"]=1
+    operations["updateSingleItemsBudgets"]=1
+    operations["updateSingleItemsCampaigns"]=1
+    operations["updateSingleItemsCarbonFootprint"]=1
+    operations["updateSingleItemsCompanyAssets"]=1
+    operations["updateSingleItemsContent"]=1
+    operations["updateSingleItemsContracts"]=1
+    operations["updateSingleItemsCrm"]=1
+    operations["updateSingleItemsDepartment"]=1
+    operations["updateSingleItemsDistribution"]=1
+    operations["updateSingleItemsEmailCampaigns"]=1
+    operations["updateSingleItemsEmployeeDirectory"]=1
+    operations["updateSingleItemsEnergyEfficiency"]=1
+    operations["updateSingleItemsEnvironmentalCompliance"]=1
+    operations["updateSingleItemsEvents"]=1
+    operations["updateSingleItemsExpenses"]=1
+    operations["updateSingleItemsFacilities"]=1
+    operations["updateSingleItemsFeedback"]=1
+    operations["updateSingleItemsForum"]=1
+    operations["updateSingleItemsFulfillment"]=1
+    operations["updateSingleItemsGovernanceandEthics"]=1
+    operations["updateSingleItemsHelpdesk"]=1
+    operations["updateSingleItemsInventory"]=1
+    operations["updateSingleItemsInvoices"]=1
+    operations["updateSingleItemsInvoicing"]=1
+    operations["updateSingleItemsLifecycle"]=1
+    operations["updateSingleItemsLiveChat"]=1
+    operations["updateSingleItemsLoyalty"]=1
+    operations["updateSingleItemsMaintenance"]=1
+    operations["updateSingleItemsPayroll"]=1
+    operations["updateSingleItemsPerformance"]=1
+    operations["updateSingleItemsPointofSale"]=1
+    operations["updateSingleItemsPolicy"]=1
+    operations["updateSingleItemsProcurement"]=1
+    operations["updateSingleItemsProductionBatch"]=1
+    operations["updateSingleItemsProject"]=1
+    operations["updateSingleItemsPurchaseOrders"]=1
+    operations["updateSingleItemsQualityCheck"]=1
+    operations["updateSingleItemsQuotes"]=1
+    operations["updateSingleItemsRecruit"]=1
+    operations["updateSingleItemsRegulations"]=1
+    operations["updateSingleItemsRentals"]=1
+    operations["updateSingleItemsShipment"]=1
+    operations["updateSingleItemsSocialMedia"]=1
+    operations["updateSingleItemsSocialResponsibility"]=1
+    operations["updateSingleItemsSuppliers"]=1
+    operations["updateSingleItemsSurveys"]=1
+    operations["updateSingleItemsSustainableSupplyChain"]=1
+    operations["updateSingleItemsTaxes"]=1
+    operations["updateSingleItemsTraining"]=1
+    operations["updateSingleItemsTransactions"]=1
+    operations["createItemsAccounts"]=1
+    operations["deleteItemsAccounts"]=1
+    operations["deleteSingleItemsAccounts"]=1
+    operations["readItemsAccounts"]=1
+    operations["readSingleItemsAccounts"]=1
+    operations["updateItemsAccounts"]=1
+    operations["updateSingleItemsAccounts"]=1
+    operations["createItemsAppointments"]=1
+    operations["deleteItemsAppointments"]=1
+    operations["deleteSingleItemsAppointments"]=1
+    operations["readItemsAppointments"]=1
+    operations["readSingleItemsAppointments"]=1
+    operations["updateItemsAppointments"]=1
+    operations["updateSingleItemsAppointments"]=1
+    operations["createItemsBudgets"]=1
+    operations["deleteItemsBudgets"]=1
+    operations["deleteSingleItemsBudgets"]=1
+    operations["readItemsBudgets"]=1
+    operations["readSingleItemsBudgets"]=1
+    operations["updateItemsBudgets"]=1
+    operations["updateSingleItemsBudgets"]=1
+    operations["createItemsCampaigns"]=1
+    operations["deleteItemsCampaigns"]=1
+    operations["deleteSingleItemsCampaigns"]=1
+    operations["readItemsCampaigns"]=1
+    operations["readSingleItemsCampaigns"]=1
+    operations["updateItemsCampaigns"]=1
+    operations["updateSingleItemsCampaigns"]=1
+    operations["createItemsCarbonFootprint"]=1
+    operations["deleteItemsCarbonFootprint"]=1
+    operations["deleteSingleItemsCarbonFootprint"]=1
+    operations["readItemsCarbonFootprint"]=1
+    operations["readSingleItemsCarbonFootprint"]=1
+    operations["updateItemsCarbonFootprint"]=1
+    operations["updateSingleItemsCarbonFootprint"]=1
+    operations["createItemsCompanyAssets"]=1
+    operations["deleteItemsCompanyAssets"]=1
+    operations["deleteSingleItemsCompanyAssets"]=1
+    operations["readItemsCompanyAssets"]=1
+    operations["readSingleItemsCompanyAssets"]=1
+    operations["updateItemsCompanyAssets"]=1
+    operations["updateSingleItemsCompanyAssets"]=1
+    operations["createItemsContent"]=1
+    operations["deleteItemsContent"]=1
+    operations["deleteSingleItemsContent"]=1
+    operations["readItemsContent"]=1
+    operations["readSingleItemsContent"]=1
+    operations["updateItemsContent"]=1
+    operations["updateSingleItemsContent"]=1
+    operations["createItemsContracts"]=1
+    operations["deleteItemsContracts"]=1
+    operations["deleteSingleItemsContracts"]=1
+    operations["readItemsContracts"]=1
+    operations["readSingleItemsContracts"]=1
+    operations["updateItemsContracts"]=1
+    operations["updateSingleItemsContracts"]=1
+    operations["createItemsCrm"]=1
+    operations["deleteItemsCrm"]=1
+    operations["deleteSingleItemsCrm"]=1
+    operations["readItemsCrm"]=1
+    operations["readSingleItemsCrm"]=1
+    operations["updateItemsCrm"]=1
+    operations["updateSingleItemsCrm"]=1
+    operations["createItemsDepartment"]=1
+    operations["deleteItemsDepartment"]=1
+    operations["deleteSingleItemsDepartment"]=1
+    operations["readItemsDepartment"]=1
+    operations["readSingleItemsDepartment"]=1
+    operations["updateItemsDepartment"]=1
+    operations["updateSingleItemsDepartment"]=1
+    operations["createItemsDistribution"]=1
+    operations["deleteItemsDistribution"]=1
+    operations["deleteSingleItemsDistribution"]=1
+    operations["readItemsDistribution"]=1
+    operations["readSingleItemsDistribution"]=1
+    operations["updateItemsDistribution"]=1
+    operations["updateSingleItemsDistribution"]=1
+    operations["createItemsEmailCampaigns"]=1
+    operations["deleteItemsEmailCampaigns"]=1
+    operations["deleteSingleItemsEmailCampaigns"]=1
+    operations["readItemsEmailCampaigns"]=1
+    operations["readSingleItemsEmailCampaigns"]=1
+    operations["updateItemsEmailCampaigns"]=1
+    operations["updateSingleItemsEmailCampaigns"]=1
+    operations["createItemsEmployeeDirectory"]=1
+    operations["deleteItemsEmployeeDirectory"]=1
+    operations["deleteSingleItemsEmployeeDirectory"]=1
+    operations["readItemsEmployeeDirectory"]=1
+    operations["readSingleItemsEmployeeDirectory"]=1
+    operations["updateItemsEmployeeDirectory"]=1
+    operations["updateSingleItemsEmployeeDirectory"]=1
+    operations["createItemsEnergyEfficiency"]=1
+    operations["deleteItemsEnergyEfficiency"]=1
+    operations["deleteSingleItemsEnergyEfficiency"]=1
+    operations["readItemsEnergyEfficiency"]=1
+    operations["readSingleItemsEnergyEfficiency"]=1
+    operations["updateItemsEnergyEfficiency"]=1
+    operations["updateSingleItemsEnergyEfficiency"]=1
+    operations["createItemsEnvironmentalCompliance"]=1
+    operations["deleteItemsEnvironmentalCompliance"]=1
+    operations["deleteSingleItemsEnvironmentalCompliance"]=1
+    operations["readItemsEnvironmentalCompliance"]=1
+    operations["readSingleItemsEnvironmentalCompliance"]=1
+    operations["updateItemsEnvironmentalCompliance"]=1
+    operations["updateSingleItemsEnvironmentalCompliance"]=1
+    operations["createItemsEvents"]=1
+    operations["deleteItemsEvents"]=1
+    operations["deleteSingleItemsEvents"]=1
+    operations["readItemsEvents"]=1
+    operations["readSingleItemsEvents"]=1
+    operations["updateItemsEvents"]=1
+    operations["updateSingleItemsEvents"]=1
+    operations["createItemsExpenses"]=1
+    operations["deleteItemsExpenses"]=1
+    operations["deleteSingleItemsExpenses"]=1
+    operations["readItemsExpenses"]=1
+    operations["readSingleItemsExpenses"]=1
+    operations["updateItemsExpenses"]=1
+    operations["updateSingleItemsExpenses"]=1
+    operations["createItemsFacilities"]=1
+    operations["deleteItemsFacilities"]=1
+    operations["deleteSingleItemsFacilities"]=1
+    operations["readItemsFacilities"]=1
+    operations["readSingleItemsFacilities"]=1
+    operations["updateItemsFacilities"]=1
+    operations["updateSingleItemsFacilities"]=1
+    operations["createItemsFeedback"]=1
+    operations["deleteItemsFeedback"]=1
+    operations["deleteSingleItemsFeedback"]=1
+    operations["readItemsFeedback"]=1
+    operations["readSingleItemsFeedback"]=1
+    operations["updateItemsFeedback"]=1
+    operations["updateSingleItemsFeedback"]=1
+    operations["createItemsForum"]=1
+    operations["deleteItemsForum"]=1
+    operations["deleteSingleItemsForum"]=1
+    operations["readItemsForum"]=1
+    operations["readSingleItemsForum"]=1
+    operations["updateItemsForum"]=1
+    operations["updateSingleItemsForum"]=1
+    operations["createItemsFulfillment"]=1
+    operations["deleteItemsFulfillment"]=1
+    operations["deleteSingleItemsFulfillment"]=1
+    operations["readItemsFulfillment"]=1
+    operations["readSingleItemsFulfillment"]=1
+    operations["updateItemsFulfillment"]=1
+    operations["updateSingleItemsFulfillment"]=1
+    operations["createItemsGovernanceandEthics"]=1
+    operations["deleteItemsGovernanceandEthics"]=1
+    operations["deleteSingleItemsGovernanceandEthics"]=1
+    operations["readItemsGovernanceandEthics"]=1
+    operations["readSingleItemsGovernanceandEthics"]=1
+    operations["updateItemsGovernanceandEthics"]=1
+    operations["updateSingleItemsGovernanceandEthics"]=1
+    operations["createItemsHelpdesk"]=1
+    operations["deleteItemsHelpdesk"]=1
+    operations["deleteSingleItemsHelpdesk"]=1
+    operations["readItemsHelpdesk"]=1
+    operations["readSingleItemsHelpdesk"]=1
+    operations["updateItemsHelpdesk"]=1
+    operations["updateSingleItemsHelpdesk"]=1
+    operations["createItemsInventory"]=1
+    operations["deleteItemsInventory"]=1
+    operations["deleteSingleItemsInventory"]=1
+    operations["readItemsInventory"]=1
+    operations["readSingleItemsInventory"]=1
+    operations["updateItemsInventory"]=1
+    operations["updateSingleItemsInventory"]=1
+    operations["createItemsInvoices"]=1
+    operations["deleteItemsInvoices"]=1
+    operations["deleteSingleItemsInvoices"]=1
+    operations["readItemsInvoices"]=1
+    operations["readSingleItemsInvoices"]=1
+    operations["updateItemsInvoices"]=1
+    operations["updateSingleItemsInvoices"]=1
+    operations["createItemsInvoicing"]=1
+    operations["deleteItemsInvoicing"]=1
+    operations["deleteSingleItemsInvoicing"]=1
+    operations["readItemsInvoicing"]=1
+    operations["readSingleItemsInvoicing"]=1
+    operations["updateItemsInvoicing"]=1
+    operations["updateSingleItemsInvoicing"]=1
+    operations["createItemsLifecycle"]=1
+    operations["deleteItemsLifecycle"]=1
+    operations["deleteSingleItemsLifecycle"]=1
+    operations["readItemsLifecycle"]=1
+    operations["readSingleItemsLifecycle"]=1
+    operations["updateItemsLifecycle"]=1
+    operations["updateSingleItemsLifecycle"]=1
+    operations["createItemsLiveChat"]=1
+    operations["deleteItemsLiveChat"]=1
+    operations["deleteSingleItemsLiveChat"]=1
+    operations["readItemsLiveChat"]=1
+    operations["readSingleItemsLiveChat"]=1
+    operations["updateItemsLiveChat"]=1
+    operations["updateSingleItemsLiveChat"]=1
+    operations["createItemsLoyalty"]=1
+    operations["deleteItemsLoyalty"]=1
+    operations["deleteSingleItemsLoyalty"]=1
+    operations["readItemsLoyalty"]=1
+    operations["readSingleItemsLoyalty"]=1
+    operations["updateItemsLoyalty"]=1
+    operations["updateSingleItemsLoyalty"]=1
+    operations["createItemsMaintenance"]=1
+    operations["deleteItemsMaintenance"]=1
+    operations["deleteSingleItemsMaintenance"]=1
+    operations["readItemsMaintenance"]=1
+    operations["readSingleItemsMaintenance"]=1
+    operations["updateItemsMaintenance"]=1
+    operations["updateSingleItemsMaintenance"]=1
+    operations["createItemsPayroll"]=1
+    operations["deleteItemsPayroll"]=1
+    operations["deleteSingleItemsPayroll"]=1
+    operations["readItemsPayroll"]=1
+    operations["readSingleItemsPayroll"]=1
+    operations["updateItemsPayroll"]=1
+    operations["updateSingleItemsPayroll"]=1
+    operations["createItemsPerformance"]=1
+    operations["deleteItemsPerformance"]=1
+    operations["deleteSingleItemsPerformance"]=1
+    operations["readItemsPerformance"]=1
+    operations["readSingleItemsPerformance"]=1
+    operations["updateItemsPerformance"]=1
+    operations["updateSingleItemsPerformance"]=1
+    operations["createItemsPointofSale"]=1
+    operations["deleteItemsPointofSale"]=1
+    operations["deleteSingleItemsPointofSale"]=1
+    operations["readItemsPointofSale"]=1
+    operations["readSingleItemsPointofSale"]=1
+    operations["updateItemsPointofSale"]=1
+    operations["updateSingleItemsPointofSale"]=1
+    operations["createItemsPolicy"]=1
+    operations["deleteItemsPolicy"]=1
+    operations["deleteSingleItemsPolicy"]=1
+    operations["readItemsPolicy"]=1
+    operations["readSingleItemsPolicy"]=1
+    operations["updateItemsPolicy"]=1
+    operations["updateSingleItemsPolicy"]=1
+    operations["createItemsProcurement"]=1
+    operations["deleteItemsProcurement"]=1
+    operations["deleteSingleItemsProcurement"]=1
+    operations["readItemsProcurement"]=1
+    operations["readSingleItemsProcurement"]=1
+    operations["updateItemsProcurement"]=1
+    operations["updateSingleItemsProcurement"]=1
+    operations["createItemsProductionBatch"]=1
+    operations["deleteItemsProductionBatch"]=1
+    operations["deleteSingleItemsProductionBatch"]=1
+    operations["readItemsProductionBatch"]=1
+    operations["readSingleItemsProductionBatch"]=1
+    operations["updateItemsProductionBatch"]=1
+    operations["updateSingleItemsProductionBatch"]=1
+    operations["createItemsProject"]=1
+    operations["deleteItemsProject"]=1
+    operations["deleteSingleItemsProject"]=1
+    operations["readItemsProject"]=1
+    operations["readSingleItemsProject"]=1
+    operations["updateItemsProject"]=1
+    operations["updateSingleItemsProject"]=1
+    operations["createItemsPurchaseOrders"]=1
+    operations["deleteItemsPurchaseOrders"]=1
+    operations["deleteSingleItemsPurchaseOrders"]=1
+    operations["readItemsPurchaseOrders"]=1
+    operations["readSingleItemsPurchaseOrders"]=1
+    operations["updateItemsPurchaseOrders"]=1
+    operations["updateSingleItemsPurchaseOrders"]=1
+    operations["createItemsQualityCheck"]=1
+    operations["deleteItemsQualityCheck"]=1
+    operations["deleteSingleItemsQualityCheck"]=1
+    operations["readItemsQualityCheck"]=1
+    operations["readSingleItemsQualityCheck"]=1
+    operations["updateItemsQualityCheck"]=1
+    operations["updateSingleItemsQualityCheck"]=1
+    operations["createItemsQuotes"]=1
+    operations["deleteItemsQuotes"]=1
+    operations["deleteSingleItemsQuotes"]=1
+    operations["readItemsQuotes"]=1
+    operations["readSingleItemsQuotes"]=1
+    operations["updateItemsQuotes"]=1
+    operations["updateSingleItemsQuotes"]=1
+    operations["createItemsRecruit"]=1
+    operations["deleteItemsRecruit"]=1
+    operations["deleteSingleItemsRecruit"]=1
+    operations["readItemsRecruit"]=1
+    operations["readSingleItemsRecruit"]=1
+    operations["updateItemsRecruit"]=1
+    operations["updateSingleItemsRecruit"]=1
+    operations["createItemsRegulations"]=1
+    operations["deleteItemsRegulations"]=1
+    operations["deleteSingleItemsRegulations"]=1
+    operations["readItemsRegulations"]=1
+    operations["readSingleItemsRegulations"]=1
+    operations["updateItemsRegulations"]=1
+    operations["updateSingleItemsRegulations"]=1
+    operations["createItemsRentals"]=1
+    operations["deleteItemsRentals"]=1
+    operations["deleteSingleItemsRentals"]=1
+    operations["readItemsRentals"]=1
+    operations["readSingleItemsRentals"]=1
+    operations["updateItemsRentals"]=1
+    operations["updateSingleItemsRentals"]=1
+    operations["createItemsShipment"]=1
+    operations["deleteItemsShipment"]=1
+    operations["deleteSingleItemsShipment"]=1
+    operations["readItemsShipment"]=1
+    operations["readSingleItemsShipment"]=1
+    operations["updateItemsShipment"]=1
+    operations["updateSingleItemsShipment"]=1
+    operations["createItemsSocialMedia"]=1
+    operations["deleteItemsSocialMedia"]=1
+    operations["deleteSingleItemsSocialMedia"]=1
+    operations["readItemsSocialMedia"]=1
+    operations["readSingleItemsSocialMedia"]=1
+    operations["updateItemsSocialMedia"]=1
+    operations["updateSingleItemsSocialMedia"]=1
+    operations["createItemsSocialResponsibility"]=1
+    operations["deleteItemsSocialResponsibility"]=1
+    operations["deleteSingleItemsSocialResponsibility"]=1
+    operations["readItemsSocialResponsibility"]=1
+    operations["readSingleItemsSocialResponsibility"]=1
+    operations["updateItemsSocialResponsibility"]=1
+    operations["updateSingleItemsSocialResponsibility"]=1
+    operations["createItemsSuppliers"]=1
+    operations["deleteItemsSuppliers"]=1
+    operations["deleteSingleItemsSuppliers"]=1
+    operations["readItemsSuppliers"]=1
+    operations["readSingleItemsSuppliers"]=1
+    operations["updateItemsSuppliers"]=1
+    operations["updateSingleItemsSuppliers"]=1
+    operations["createItemsSurveys"]=1
+    operations["deleteItemsSurveys"]=1
+    operations["deleteSingleItemsSurveys"]=1
+    operations["readItemsSurveys"]=1
+    operations["readSingleItemsSurveys"]=1
+    operations["updateItemsSurveys"]=1
+    operations["updateSingleItemsSurveys"]=1
+    operations["createItemsSustainableSupplyChain"]=1
+    operations["deleteItemsSustainableSupplyChain"]=1
+    operations["deleteSingleItemsSustainableSupplyChain"]=1
+    operations["readItemsSustainableSupplyChain"]=1
+    operations["readSingleItemsSustainableSupplyChain"]=1
+    operations["updateItemsSustainableSupplyChain"]=1
+    operations["updateSingleItemsSustainableSupplyChain"]=1
+    operations["createItemsTaxes"]=1
+    operations["deleteItemsTaxes"]=1
+    operations["deleteSingleItemsTaxes"]=1
+    operations["readItemsTaxes"]=1
+    operations["readSingleItemsTaxes"]=1
+    operations["updateItemsTaxes"]=1
+    operations["updateSingleItemsTaxes"]=1
+    operations["createItemsTraining"]=1
+    operations["deleteItemsTraining"]=1
+    operations["deleteSingleItemsTraining"]=1
+    operations["readItemsTraining"]=1
+    operations["readSingleItemsTraining"]=1
+    operations["updateItemsTraining"]=1
+    operations["updateSingleItemsTraining"]=1
+    operations["createItemsTransactions"]=1
+    operations["deleteItemsTransactions"]=1
+    operations["deleteSingleItemsTransactions"]=1
+    operations["readItemsTransactions"]=1
+    operations["readSingleItemsTransactions"]=1
+    operations["updateItemsTransactions"]=1
+    operations["updateSingleItemsTransactions"]=1
+    operations["getMyPermissions"]=1
+    operations["getPermission"]=1
+    operations["getPermissions"]=1
+    operations["createPreset"]=1
+    operations["deletePreset"]=1
+    operations["deletePresets"]=1
+    operations["getPreset"]=1
+    operations["getPresets"]=1
+    operations["updatePreset"]=1
+    operations["updatePresets"]=1
+    operations["getRelation"]=1
+    operations["getRelations"]=1
+    operations["getRole"]=1
+    operations["getRoles"]=1
+    operations["schemaApply"]=1
+    operations["schemaDiff"]=1
+    operations["schemaSnapshot"]=1
+    operations["ping"]=1
+    operations["serverInfo"]=1
+    operations["getSettings"]=1
+    operations["getMe"]=1
+    operations["getUser"]=1
+    operations["getUsers"]=1
+    operations["updateLastUsedPageMe"]=1
+    operations["updateMe"]=1
+    operations["updateUser"]=1
+    operations["updateUsers"]=1
+    operations["clearCache"]=1
+    operations["export"]=1
+    operations["hashGenerate"]=1
+    operations["hashVerify"]=1
+    operations["import"]=1
+    operations["random"]=1
+    operations["sort"]=1
+
+    # An associative array of operations to their parameters
+    # Only include path, query and header parameters
+    declare -A operation_parameters
+    operation_parameters["createComment"]="meta= "
+    operation_parameters["getActivities"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["getActivity"]="id= fields= meta= "
+    operation_parameters["getAsset"]="id= key= transforms= download= "
+    operation_parameters["login"]=""
+    operation_parameters["logout"]=""
+    operation_parameters["oauth"]=""
+    operation_parameters["oauthProvider"]="provider= redirect= "
+    operation_parameters["passwordRequest"]=""
+    operation_parameters["passwordReset"]=""
+    operation_parameters["refresh"]=""
+    operation_parameters["getCollection"]="id= meta= "
+    operation_parameters["getCollections"]="offset= meta= "
+    operation_parameters["getDisplays"]=""
+    operation_parameters["getInterfaces"]=""
+    operation_parameters["getLayouts"]=""
+    operation_parameters["getModules"]=""
+    operation_parameters["getCollectionField"]="collection= id= "
+    operation_parameters["getCollectionFields"]="collection= sort= "
+    operation_parameters["getFields"]="limit= sort= "
+    operation_parameters["createFile"]=""
+    operation_parameters["deleteFile"]="id= "
+    operation_parameters["deleteFiles"]=""
+    operation_parameters["getFile"]="id= fields= meta= "
+    operation_parameters["getFiles"]="fields= limit= offset= sort= filter= search= meta= "
+    operation_parameters["updateFile"]="id= fields= meta= "
+    operation_parameters["updateFiles"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["getFlow"]="id= "
+    operation_parameters["getFlows"]=""
+    operation_parameters["createFolder"]="fields= meta= "
+    operation_parameters["deleteFolder"]="id= "
+    operation_parameters["deleteFolders"]=""
+    operation_parameters["getFolder"]="id= fields= meta= "
+    operation_parameters["getFolders"]="fields= limit= offset= sort= filter= search= meta= "
+    operation_parameters["updateFolder"]="id= fields= meta= "
+    operation_parameters["updateFolders"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["createItemsAccounts"]="meta= "
+    operation_parameters["createItemsAppointments"]="meta= "
+    operation_parameters["createItemsBudgets"]="meta= "
+    operation_parameters["createItemsCampaigns"]="meta= "
+    operation_parameters["createItemsCarbonFootprint"]="meta= "
+    operation_parameters["createItemsCompanyAssets"]="meta= "
+    operation_parameters["createItemsContent"]="meta= "
+    operation_parameters["createItemsContracts"]="meta= "
+    operation_parameters["createItemsCrm"]="meta= "
+    operation_parameters["createItemsDepartment"]="meta= "
+    operation_parameters["createItemsDistribution"]="meta= "
+    operation_parameters["createItemsEmailCampaigns"]="meta= "
+    operation_parameters["createItemsEmployeeDirectory"]="meta= "
+    operation_parameters["createItemsEnergyEfficiency"]="meta= "
+    operation_parameters["createItemsEnvironmentalCompliance"]="meta= "
+    operation_parameters["createItemsEvents"]="meta= "
+    operation_parameters["createItemsExpenses"]="meta= "
+    operation_parameters["createItemsFacilities"]="meta= "
+    operation_parameters["createItemsFeedback"]="meta= "
+    operation_parameters["createItemsForum"]="meta= "
+    operation_parameters["createItemsFulfillment"]="meta= "
+    operation_parameters["createItemsGovernanceandEthics"]="meta= "
+    operation_parameters["createItemsHelpdesk"]="meta= "
+    operation_parameters["createItemsInventory"]="meta= "
+    operation_parameters["createItemsInvoices"]="meta= "
+    operation_parameters["createItemsInvoicing"]="meta= "
+    operation_parameters["createItemsLifecycle"]="meta= "
+    operation_parameters["createItemsLiveChat"]="meta= "
+    operation_parameters["createItemsLoyalty"]="meta= "
+    operation_parameters["createItemsMaintenance"]="meta= "
+    operation_parameters["createItemsPayroll"]="meta= "
+    operation_parameters["createItemsPerformance"]="meta= "
+    operation_parameters["createItemsPointofSale"]="meta= "
+    operation_parameters["createItemsPolicy"]="meta= "
+    operation_parameters["createItemsProcurement"]="meta= "
+    operation_parameters["createItemsProductionBatch"]="meta= "
+    operation_parameters["createItemsProject"]="meta= "
+    operation_parameters["createItemsPurchaseOrders"]="meta= "
+    operation_parameters["createItemsQualityCheck"]="meta= "
+    operation_parameters["createItemsQuotes"]="meta= "
+    operation_parameters["createItemsRecruit"]="meta= "
+    operation_parameters["createItemsRegulations"]="meta= "
+    operation_parameters["createItemsRentals"]="meta= "
+    operation_parameters["createItemsShipment"]="meta= "
+    operation_parameters["createItemsSocialMedia"]="meta= "
+    operation_parameters["createItemsSocialResponsibility"]="meta= "
+    operation_parameters["createItemsSuppliers"]="meta= "
+    operation_parameters["createItemsSurveys"]="meta= "
+    operation_parameters["createItemsSustainableSupplyChain"]="meta= "
+    operation_parameters["createItemsTaxes"]="meta= "
+    operation_parameters["createItemsTraining"]="meta= "
+    operation_parameters["createItemsTransactions"]="meta= "
+    operation_parameters["deleteItemsAccounts"]=""
+    operation_parameters["deleteItemsAppointments"]=""
+    operation_parameters["deleteItemsBudgets"]=""
+    operation_parameters["deleteItemsCampaigns"]=""
+    operation_parameters["deleteItemsCarbonFootprint"]=""
+    operation_parameters["deleteItemsCompanyAssets"]=""
+    operation_parameters["deleteItemsContent"]=""
+    operation_parameters["deleteItemsContracts"]=""
+    operation_parameters["deleteItemsCrm"]=""
+    operation_parameters["deleteItemsDepartment"]=""
+    operation_parameters["deleteItemsDistribution"]=""
+    operation_parameters["deleteItemsEmailCampaigns"]=""
+    operation_parameters["deleteItemsEmployeeDirectory"]=""
+    operation_parameters["deleteItemsEnergyEfficiency"]=""
+    operation_parameters["deleteItemsEnvironmentalCompliance"]=""
+    operation_parameters["deleteItemsEvents"]=""
+    operation_parameters["deleteItemsExpenses"]=""
+    operation_parameters["deleteItemsFacilities"]=""
+    operation_parameters["deleteItemsFeedback"]=""
+    operation_parameters["deleteItemsForum"]=""
+    operation_parameters["deleteItemsFulfillment"]=""
+    operation_parameters["deleteItemsGovernanceandEthics"]=""
+    operation_parameters["deleteItemsHelpdesk"]=""
+    operation_parameters["deleteItemsInventory"]=""
+    operation_parameters["deleteItemsInvoices"]=""
+    operation_parameters["deleteItemsInvoicing"]=""
+    operation_parameters["deleteItemsLifecycle"]=""
+    operation_parameters["deleteItemsLiveChat"]=""
+    operation_parameters["deleteItemsLoyalty"]=""
+    operation_parameters["deleteItemsMaintenance"]=""
+    operation_parameters["deleteItemsPayroll"]=""
+    operation_parameters["deleteItemsPerformance"]=""
+    operation_parameters["deleteItemsPointofSale"]=""
+    operation_parameters["deleteItemsPolicy"]=""
+    operation_parameters["deleteItemsProcurement"]=""
+    operation_parameters["deleteItemsProductionBatch"]=""
+    operation_parameters["deleteItemsProject"]=""
+    operation_parameters["deleteItemsPurchaseOrders"]=""
+    operation_parameters["deleteItemsQualityCheck"]=""
+    operation_parameters["deleteItemsQuotes"]=""
+    operation_parameters["deleteItemsRecruit"]=""
+    operation_parameters["deleteItemsRegulations"]=""
+    operation_parameters["deleteItemsRentals"]=""
+    operation_parameters["deleteItemsShipment"]=""
+    operation_parameters["deleteItemsSocialMedia"]=""
+    operation_parameters["deleteItemsSocialResponsibility"]=""
+    operation_parameters["deleteItemsSuppliers"]=""
+    operation_parameters["deleteItemsSurveys"]=""
+    operation_parameters["deleteItemsSustainableSupplyChain"]=""
+    operation_parameters["deleteItemsTaxes"]=""
+    operation_parameters["deleteItemsTraining"]=""
+    operation_parameters["deleteItemsTransactions"]=""
+    operation_parameters["deleteSingleItemsAccounts"]="id= "
+    operation_parameters["deleteSingleItemsAppointments"]="id= "
+    operation_parameters["deleteSingleItemsBudgets"]="id= "
+    operation_parameters["deleteSingleItemsCampaigns"]="id= "
+    operation_parameters["deleteSingleItemsCarbonFootprint"]="id= "
+    operation_parameters["deleteSingleItemsCompanyAssets"]="id= "
+    operation_parameters["deleteSingleItemsContent"]="id= "
+    operation_parameters["deleteSingleItemsContracts"]="id= "
+    operation_parameters["deleteSingleItemsCrm"]="id= "
+    operation_parameters["deleteSingleItemsDepartment"]="id= "
+    operation_parameters["deleteSingleItemsDistribution"]="id= "
+    operation_parameters["deleteSingleItemsEmailCampaigns"]="id= "
+    operation_parameters["deleteSingleItemsEmployeeDirectory"]="id= "
+    operation_parameters["deleteSingleItemsEnergyEfficiency"]="id= "
+    operation_parameters["deleteSingleItemsEnvironmentalCompliance"]="id= "
+    operation_parameters["deleteSingleItemsEvents"]="id= "
+    operation_parameters["deleteSingleItemsExpenses"]="id= "
+    operation_parameters["deleteSingleItemsFacilities"]="id= "
+    operation_parameters["deleteSingleItemsFeedback"]="id= "
+    operation_parameters["deleteSingleItemsForum"]="id= "
+    operation_parameters["deleteSingleItemsFulfillment"]="id= "
+    operation_parameters["deleteSingleItemsGovernanceandEthics"]="id= "
+    operation_parameters["deleteSingleItemsHelpdesk"]="id= "
+    operation_parameters["deleteSingleItemsInventory"]="id= "
+    operation_parameters["deleteSingleItemsInvoices"]="id= "
+    operation_parameters["deleteSingleItemsInvoicing"]="id= "
+    operation_parameters["deleteSingleItemsLifecycle"]="id= "
+    operation_parameters["deleteSingleItemsLiveChat"]="id= "
+    operation_parameters["deleteSingleItemsLoyalty"]="id= "
+    operation_parameters["deleteSingleItemsMaintenance"]="id= "
+    operation_parameters["deleteSingleItemsPayroll"]="id= "
+    operation_parameters["deleteSingleItemsPerformance"]="id= "
+    operation_parameters["deleteSingleItemsPointofSale"]="id= "
+    operation_parameters["deleteSingleItemsPolicy"]="id= "
+    operation_parameters["deleteSingleItemsProcurement"]="id= "
+    operation_parameters["deleteSingleItemsProductionBatch"]="id= "
+    operation_parameters["deleteSingleItemsProject"]="id= "
+    operation_parameters["deleteSingleItemsPurchaseOrders"]="id= "
+    operation_parameters["deleteSingleItemsQualityCheck"]="id= "
+    operation_parameters["deleteSingleItemsQuotes"]="id= "
+    operation_parameters["deleteSingleItemsRecruit"]="id= "
+    operation_parameters["deleteSingleItemsRegulations"]="id= "
+    operation_parameters["deleteSingleItemsRentals"]="id= "
+    operation_parameters["deleteSingleItemsShipment"]="id= "
+    operation_parameters["deleteSingleItemsSocialMedia"]="id= "
+    operation_parameters["deleteSingleItemsSocialResponsibility"]="id= "
+    operation_parameters["deleteSingleItemsSuppliers"]="id= "
+    operation_parameters["deleteSingleItemsSurveys"]="id= "
+    operation_parameters["deleteSingleItemsSustainableSupplyChain"]="id= "
+    operation_parameters["deleteSingleItemsTaxes"]="id= "
+    operation_parameters["deleteSingleItemsTraining"]="id= "
+    operation_parameters["deleteSingleItemsTransactions"]="id= "
+    operation_parameters["readItemsAccounts"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsAppointments"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsBudgets"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsCampaigns"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsCarbonFootprint"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsCompanyAssets"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsContent"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsContracts"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsCrm"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsDepartment"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsDistribution"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsEmailCampaigns"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsEmployeeDirectory"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsEnergyEfficiency"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsEnvironmentalCompliance"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsEvents"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsExpenses"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsFacilities"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsFeedback"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsForum"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsFulfillment"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsGovernanceandEthics"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsHelpdesk"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsInventory"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsInvoices"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsInvoicing"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsLifecycle"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsLiveChat"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsLoyalty"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsMaintenance"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsPayroll"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsPerformance"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsPointofSale"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsPolicy"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsProcurement"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsProductionBatch"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsProject"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsPurchaseOrders"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsQualityCheck"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsQuotes"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsRecruit"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsRegulations"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsRentals"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsShipment"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsSocialMedia"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsSocialResponsibility"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsSuppliers"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsSurveys"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsSustainableSupplyChain"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsTaxes"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsTraining"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readItemsTransactions"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsAccounts"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsAppointments"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsBudgets"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsCampaigns"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsCarbonFootprint"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsCompanyAssets"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsContent"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsContracts"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsCrm"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsDepartment"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsDistribution"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsEmailCampaigns"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsEmployeeDirectory"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsEnergyEfficiency"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsEnvironmentalCompliance"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsEvents"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsExpenses"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsFacilities"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsFeedback"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsForum"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsFulfillment"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsGovernanceandEthics"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsHelpdesk"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsInventory"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsInvoices"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsInvoicing"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsLifecycle"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsLiveChat"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsLoyalty"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsMaintenance"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsPayroll"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsPerformance"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsPointofSale"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsPolicy"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsProcurement"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsProductionBatch"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsProject"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsPurchaseOrders"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsQualityCheck"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsQuotes"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsRecruit"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsRegulations"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsRentals"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsShipment"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsSocialMedia"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsSocialResponsibility"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsSuppliers"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsSurveys"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsSustainableSupplyChain"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsTaxes"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsTraining"]="id= fields= meta= version= "
+    operation_parameters["readSingleItemsTransactions"]="id= fields= meta= version= "
+    operation_parameters["updateItemsAccounts"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsAppointments"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsBudgets"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsCampaigns"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsCarbonFootprint"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsCompanyAssets"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsContent"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsContracts"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsCrm"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsDepartment"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsDistribution"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsEmailCampaigns"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsEmployeeDirectory"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsEnergyEfficiency"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsEnvironmentalCompliance"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsEvents"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsExpenses"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsFacilities"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsFeedback"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsForum"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsFulfillment"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsGovernanceandEthics"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsHelpdesk"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsInventory"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsInvoices"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsInvoicing"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsLifecycle"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsLiveChat"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsLoyalty"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsMaintenance"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsPayroll"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsPerformance"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsPointofSale"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsPolicy"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsProcurement"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsProductionBatch"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsProject"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsPurchaseOrders"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsQualityCheck"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsQuotes"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsRecruit"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsRegulations"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsRentals"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsShipment"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsSocialMedia"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsSocialResponsibility"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsSuppliers"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsSurveys"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsSustainableSupplyChain"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsTaxes"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsTraining"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateItemsTransactions"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsAccounts"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsAppointments"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsBudgets"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsCampaigns"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsCarbonFootprint"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsCompanyAssets"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsContent"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsContracts"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsCrm"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsDepartment"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsDistribution"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsEmailCampaigns"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsEmployeeDirectory"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsEnergyEfficiency"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsEnvironmentalCompliance"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsEvents"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsExpenses"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsFacilities"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsFeedback"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsForum"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsFulfillment"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsGovernanceandEthics"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsHelpdesk"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsInventory"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsInvoices"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsInvoicing"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsLifecycle"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsLiveChat"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsLoyalty"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsMaintenance"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsPayroll"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsPerformance"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsPointofSale"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsPolicy"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsProcurement"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsProductionBatch"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsProject"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsPurchaseOrders"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsQualityCheck"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsQuotes"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsRecruit"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsRegulations"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsRentals"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsShipment"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsSocialMedia"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsSocialResponsibility"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsSuppliers"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsSurveys"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsSustainableSupplyChain"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsTaxes"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsTraining"]="id= fields= meta= "
+    operation_parameters["updateSingleItemsTransactions"]="id= fields= meta= "
+    operation_parameters["createItemsAccounts"]="meta= "
+    operation_parameters["deleteItemsAccounts"]=""
+    operation_parameters["deleteSingleItemsAccounts"]="id= "
+    operation_parameters["readItemsAccounts"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsAccounts"]="id= fields= meta= version= "
+    operation_parameters["updateItemsAccounts"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsAccounts"]="id= fields= meta= "
+    operation_parameters["createItemsAppointments"]="meta= "
+    operation_parameters["deleteItemsAppointments"]=""
+    operation_parameters["deleteSingleItemsAppointments"]="id= "
+    operation_parameters["readItemsAppointments"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsAppointments"]="id= fields= meta= version= "
+    operation_parameters["updateItemsAppointments"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsAppointments"]="id= fields= meta= "
+    operation_parameters["createItemsBudgets"]="meta= "
+    operation_parameters["deleteItemsBudgets"]=""
+    operation_parameters["deleteSingleItemsBudgets"]="id= "
+    operation_parameters["readItemsBudgets"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsBudgets"]="id= fields= meta= version= "
+    operation_parameters["updateItemsBudgets"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsBudgets"]="id= fields= meta= "
+    operation_parameters["createItemsCampaigns"]="meta= "
+    operation_parameters["deleteItemsCampaigns"]=""
+    operation_parameters["deleteSingleItemsCampaigns"]="id= "
+    operation_parameters["readItemsCampaigns"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsCampaigns"]="id= fields= meta= version= "
+    operation_parameters["updateItemsCampaigns"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsCampaigns"]="id= fields= meta= "
+    operation_parameters["createItemsCarbonFootprint"]="meta= "
+    operation_parameters["deleteItemsCarbonFootprint"]=""
+    operation_parameters["deleteSingleItemsCarbonFootprint"]="id= "
+    operation_parameters["readItemsCarbonFootprint"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsCarbonFootprint"]="id= fields= meta= version= "
+    operation_parameters["updateItemsCarbonFootprint"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsCarbonFootprint"]="id= fields= meta= "
+    operation_parameters["createItemsCompanyAssets"]="meta= "
+    operation_parameters["deleteItemsCompanyAssets"]=""
+    operation_parameters["deleteSingleItemsCompanyAssets"]="id= "
+    operation_parameters["readItemsCompanyAssets"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsCompanyAssets"]="id= fields= meta= version= "
+    operation_parameters["updateItemsCompanyAssets"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsCompanyAssets"]="id= fields= meta= "
+    operation_parameters["createItemsContent"]="meta= "
+    operation_parameters["deleteItemsContent"]=""
+    operation_parameters["deleteSingleItemsContent"]="id= "
+    operation_parameters["readItemsContent"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsContent"]="id= fields= meta= version= "
+    operation_parameters["updateItemsContent"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsContent"]="id= fields= meta= "
+    operation_parameters["createItemsContracts"]="meta= "
+    operation_parameters["deleteItemsContracts"]=""
+    operation_parameters["deleteSingleItemsContracts"]="id= "
+    operation_parameters["readItemsContracts"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsContracts"]="id= fields= meta= version= "
+    operation_parameters["updateItemsContracts"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsContracts"]="id= fields= meta= "
+    operation_parameters["createItemsCrm"]="meta= "
+    operation_parameters["deleteItemsCrm"]=""
+    operation_parameters["deleteSingleItemsCrm"]="id= "
+    operation_parameters["readItemsCrm"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsCrm"]="id= fields= meta= version= "
+    operation_parameters["updateItemsCrm"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsCrm"]="id= fields= meta= "
+    operation_parameters["createItemsDepartment"]="meta= "
+    operation_parameters["deleteItemsDepartment"]=""
+    operation_parameters["deleteSingleItemsDepartment"]="id= "
+    operation_parameters["readItemsDepartment"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsDepartment"]="id= fields= meta= version= "
+    operation_parameters["updateItemsDepartment"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsDepartment"]="id= fields= meta= "
+    operation_parameters["createItemsDistribution"]="meta= "
+    operation_parameters["deleteItemsDistribution"]=""
+    operation_parameters["deleteSingleItemsDistribution"]="id= "
+    operation_parameters["readItemsDistribution"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsDistribution"]="id= fields= meta= version= "
+    operation_parameters["updateItemsDistribution"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsDistribution"]="id= fields= meta= "
+    operation_parameters["createItemsEmailCampaigns"]="meta= "
+    operation_parameters["deleteItemsEmailCampaigns"]=""
+    operation_parameters["deleteSingleItemsEmailCampaigns"]="id= "
+    operation_parameters["readItemsEmailCampaigns"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsEmailCampaigns"]="id= fields= meta= version= "
+    operation_parameters["updateItemsEmailCampaigns"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsEmailCampaigns"]="id= fields= meta= "
+    operation_parameters["createItemsEmployeeDirectory"]="meta= "
+    operation_parameters["deleteItemsEmployeeDirectory"]=""
+    operation_parameters["deleteSingleItemsEmployeeDirectory"]="id= "
+    operation_parameters["readItemsEmployeeDirectory"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsEmployeeDirectory"]="id= fields= meta= version= "
+    operation_parameters["updateItemsEmployeeDirectory"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsEmployeeDirectory"]="id= fields= meta= "
+    operation_parameters["createItemsEnergyEfficiency"]="meta= "
+    operation_parameters["deleteItemsEnergyEfficiency"]=""
+    operation_parameters["deleteSingleItemsEnergyEfficiency"]="id= "
+    operation_parameters["readItemsEnergyEfficiency"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsEnergyEfficiency"]="id= fields= meta= version= "
+    operation_parameters["updateItemsEnergyEfficiency"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsEnergyEfficiency"]="id= fields= meta= "
+    operation_parameters["createItemsEnvironmentalCompliance"]="meta= "
+    operation_parameters["deleteItemsEnvironmentalCompliance"]=""
+    operation_parameters["deleteSingleItemsEnvironmentalCompliance"]="id= "
+    operation_parameters["readItemsEnvironmentalCompliance"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsEnvironmentalCompliance"]="id= fields= meta= version= "
+    operation_parameters["updateItemsEnvironmentalCompliance"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsEnvironmentalCompliance"]="id= fields= meta= "
+    operation_parameters["createItemsEvents"]="meta= "
+    operation_parameters["deleteItemsEvents"]=""
+    operation_parameters["deleteSingleItemsEvents"]="id= "
+    operation_parameters["readItemsEvents"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsEvents"]="id= fields= meta= version= "
+    operation_parameters["updateItemsEvents"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsEvents"]="id= fields= meta= "
+    operation_parameters["createItemsExpenses"]="meta= "
+    operation_parameters["deleteItemsExpenses"]=""
+    operation_parameters["deleteSingleItemsExpenses"]="id= "
+    operation_parameters["readItemsExpenses"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsExpenses"]="id= fields= meta= version= "
+    operation_parameters["updateItemsExpenses"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsExpenses"]="id= fields= meta= "
+    operation_parameters["createItemsFacilities"]="meta= "
+    operation_parameters["deleteItemsFacilities"]=""
+    operation_parameters["deleteSingleItemsFacilities"]="id= "
+    operation_parameters["readItemsFacilities"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsFacilities"]="id= fields= meta= version= "
+    operation_parameters["updateItemsFacilities"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsFacilities"]="id= fields= meta= "
+    operation_parameters["createItemsFeedback"]="meta= "
+    operation_parameters["deleteItemsFeedback"]=""
+    operation_parameters["deleteSingleItemsFeedback"]="id= "
+    operation_parameters["readItemsFeedback"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsFeedback"]="id= fields= meta= version= "
+    operation_parameters["updateItemsFeedback"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsFeedback"]="id= fields= meta= "
+    operation_parameters["createItemsForum"]="meta= "
+    operation_parameters["deleteItemsForum"]=""
+    operation_parameters["deleteSingleItemsForum"]="id= "
+    operation_parameters["readItemsForum"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsForum"]="id= fields= meta= version= "
+    operation_parameters["updateItemsForum"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsForum"]="id= fields= meta= "
+    operation_parameters["createItemsFulfillment"]="meta= "
+    operation_parameters["deleteItemsFulfillment"]=""
+    operation_parameters["deleteSingleItemsFulfillment"]="id= "
+    operation_parameters["readItemsFulfillment"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsFulfillment"]="id= fields= meta= version= "
+    operation_parameters["updateItemsFulfillment"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsFulfillment"]="id= fields= meta= "
+    operation_parameters["createItemsGovernanceandEthics"]="meta= "
+    operation_parameters["deleteItemsGovernanceandEthics"]=""
+    operation_parameters["deleteSingleItemsGovernanceandEthics"]="id= "
+    operation_parameters["readItemsGovernanceandEthics"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsGovernanceandEthics"]="id= fields= meta= version= "
+    operation_parameters["updateItemsGovernanceandEthics"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsGovernanceandEthics"]="id= fields= meta= "
+    operation_parameters["createItemsHelpdesk"]="meta= "
+    operation_parameters["deleteItemsHelpdesk"]=""
+    operation_parameters["deleteSingleItemsHelpdesk"]="id= "
+    operation_parameters["readItemsHelpdesk"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsHelpdesk"]="id= fields= meta= version= "
+    operation_parameters["updateItemsHelpdesk"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsHelpdesk"]="id= fields= meta= "
+    operation_parameters["createItemsInventory"]="meta= "
+    operation_parameters["deleteItemsInventory"]=""
+    operation_parameters["deleteSingleItemsInventory"]="id= "
+    operation_parameters["readItemsInventory"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsInventory"]="id= fields= meta= version= "
+    operation_parameters["updateItemsInventory"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsInventory"]="id= fields= meta= "
+    operation_parameters["createItemsInvoices"]="meta= "
+    operation_parameters["deleteItemsInvoices"]=""
+    operation_parameters["deleteSingleItemsInvoices"]="id= "
+    operation_parameters["readItemsInvoices"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsInvoices"]="id= fields= meta= version= "
+    operation_parameters["updateItemsInvoices"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsInvoices"]="id= fields= meta= "
+    operation_parameters["createItemsInvoicing"]="meta= "
+    operation_parameters["deleteItemsInvoicing"]=""
+    operation_parameters["deleteSingleItemsInvoicing"]="id= "
+    operation_parameters["readItemsInvoicing"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsInvoicing"]="id= fields= meta= version= "
+    operation_parameters["updateItemsInvoicing"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsInvoicing"]="id= fields= meta= "
+    operation_parameters["createItemsLifecycle"]="meta= "
+    operation_parameters["deleteItemsLifecycle"]=""
+    operation_parameters["deleteSingleItemsLifecycle"]="id= "
+    operation_parameters["readItemsLifecycle"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsLifecycle"]="id= fields= meta= version= "
+    operation_parameters["updateItemsLifecycle"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsLifecycle"]="id= fields= meta= "
+    operation_parameters["createItemsLiveChat"]="meta= "
+    operation_parameters["deleteItemsLiveChat"]=""
+    operation_parameters["deleteSingleItemsLiveChat"]="id= "
+    operation_parameters["readItemsLiveChat"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsLiveChat"]="id= fields= meta= version= "
+    operation_parameters["updateItemsLiveChat"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsLiveChat"]="id= fields= meta= "
+    operation_parameters["createItemsLoyalty"]="meta= "
+    operation_parameters["deleteItemsLoyalty"]=""
+    operation_parameters["deleteSingleItemsLoyalty"]="id= "
+    operation_parameters["readItemsLoyalty"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsLoyalty"]="id= fields= meta= version= "
+    operation_parameters["updateItemsLoyalty"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsLoyalty"]="id= fields= meta= "
+    operation_parameters["createItemsMaintenance"]="meta= "
+    operation_parameters["deleteItemsMaintenance"]=""
+    operation_parameters["deleteSingleItemsMaintenance"]="id= "
+    operation_parameters["readItemsMaintenance"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsMaintenance"]="id= fields= meta= version= "
+    operation_parameters["updateItemsMaintenance"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsMaintenance"]="id= fields= meta= "
+    operation_parameters["createItemsPayroll"]="meta= "
+    operation_parameters["deleteItemsPayroll"]=""
+    operation_parameters["deleteSingleItemsPayroll"]="id= "
+    operation_parameters["readItemsPayroll"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsPayroll"]="id= fields= meta= version= "
+    operation_parameters["updateItemsPayroll"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsPayroll"]="id= fields= meta= "
+    operation_parameters["createItemsPerformance"]="meta= "
+    operation_parameters["deleteItemsPerformance"]=""
+    operation_parameters["deleteSingleItemsPerformance"]="id= "
+    operation_parameters["readItemsPerformance"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsPerformance"]="id= fields= meta= version= "
+    operation_parameters["updateItemsPerformance"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsPerformance"]="id= fields= meta= "
+    operation_parameters["createItemsPointofSale"]="meta= "
+    operation_parameters["deleteItemsPointofSale"]=""
+    operation_parameters["deleteSingleItemsPointofSale"]="id= "
+    operation_parameters["readItemsPointofSale"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsPointofSale"]="id= fields= meta= version= "
+    operation_parameters["updateItemsPointofSale"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsPointofSale"]="id= fields= meta= "
+    operation_parameters["createItemsPolicy"]="meta= "
+    operation_parameters["deleteItemsPolicy"]=""
+    operation_parameters["deleteSingleItemsPolicy"]="id= "
+    operation_parameters["readItemsPolicy"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsPolicy"]="id= fields= meta= version= "
+    operation_parameters["updateItemsPolicy"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsPolicy"]="id= fields= meta= "
+    operation_parameters["createItemsProcurement"]="meta= "
+    operation_parameters["deleteItemsProcurement"]=""
+    operation_parameters["deleteSingleItemsProcurement"]="id= "
+    operation_parameters["readItemsProcurement"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsProcurement"]="id= fields= meta= version= "
+    operation_parameters["updateItemsProcurement"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsProcurement"]="id= fields= meta= "
+    operation_parameters["createItemsProductionBatch"]="meta= "
+    operation_parameters["deleteItemsProductionBatch"]=""
+    operation_parameters["deleteSingleItemsProductionBatch"]="id= "
+    operation_parameters["readItemsProductionBatch"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsProductionBatch"]="id= fields= meta= version= "
+    operation_parameters["updateItemsProductionBatch"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsProductionBatch"]="id= fields= meta= "
+    operation_parameters["createItemsProject"]="meta= "
+    operation_parameters["deleteItemsProject"]=""
+    operation_parameters["deleteSingleItemsProject"]="id= "
+    operation_parameters["readItemsProject"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsProject"]="id= fields= meta= version= "
+    operation_parameters["updateItemsProject"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsProject"]="id= fields= meta= "
+    operation_parameters["createItemsPurchaseOrders"]="meta= "
+    operation_parameters["deleteItemsPurchaseOrders"]=""
+    operation_parameters["deleteSingleItemsPurchaseOrders"]="id= "
+    operation_parameters["readItemsPurchaseOrders"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsPurchaseOrders"]="id= fields= meta= version= "
+    operation_parameters["updateItemsPurchaseOrders"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsPurchaseOrders"]="id= fields= meta= "
+    operation_parameters["createItemsQualityCheck"]="meta= "
+    operation_parameters["deleteItemsQualityCheck"]=""
+    operation_parameters["deleteSingleItemsQualityCheck"]="id= "
+    operation_parameters["readItemsQualityCheck"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsQualityCheck"]="id= fields= meta= version= "
+    operation_parameters["updateItemsQualityCheck"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsQualityCheck"]="id= fields= meta= "
+    operation_parameters["createItemsQuotes"]="meta= "
+    operation_parameters["deleteItemsQuotes"]=""
+    operation_parameters["deleteSingleItemsQuotes"]="id= "
+    operation_parameters["readItemsQuotes"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsQuotes"]="id= fields= meta= version= "
+    operation_parameters["updateItemsQuotes"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsQuotes"]="id= fields= meta= "
+    operation_parameters["createItemsRecruit"]="meta= "
+    operation_parameters["deleteItemsRecruit"]=""
+    operation_parameters["deleteSingleItemsRecruit"]="id= "
+    operation_parameters["readItemsRecruit"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsRecruit"]="id= fields= meta= version= "
+    operation_parameters["updateItemsRecruit"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsRecruit"]="id= fields= meta= "
+    operation_parameters["createItemsRegulations"]="meta= "
+    operation_parameters["deleteItemsRegulations"]=""
+    operation_parameters["deleteSingleItemsRegulations"]="id= "
+    operation_parameters["readItemsRegulations"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsRegulations"]="id= fields= meta= version= "
+    operation_parameters["updateItemsRegulations"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsRegulations"]="id= fields= meta= "
+    operation_parameters["createItemsRentals"]="meta= "
+    operation_parameters["deleteItemsRentals"]=""
+    operation_parameters["deleteSingleItemsRentals"]="id= "
+    operation_parameters["readItemsRentals"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsRentals"]="id= fields= meta= version= "
+    operation_parameters["updateItemsRentals"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsRentals"]="id= fields= meta= "
+    operation_parameters["createItemsShipment"]="meta= "
+    operation_parameters["deleteItemsShipment"]=""
+    operation_parameters["deleteSingleItemsShipment"]="id= "
+    operation_parameters["readItemsShipment"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsShipment"]="id= fields= meta= version= "
+    operation_parameters["updateItemsShipment"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsShipment"]="id= fields= meta= "
+    operation_parameters["createItemsSocialMedia"]="meta= "
+    operation_parameters["deleteItemsSocialMedia"]=""
+    operation_parameters["deleteSingleItemsSocialMedia"]="id= "
+    operation_parameters["readItemsSocialMedia"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsSocialMedia"]="id= fields= meta= version= "
+    operation_parameters["updateItemsSocialMedia"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsSocialMedia"]="id= fields= meta= "
+    operation_parameters["createItemsSocialResponsibility"]="meta= "
+    operation_parameters["deleteItemsSocialResponsibility"]=""
+    operation_parameters["deleteSingleItemsSocialResponsibility"]="id= "
+    operation_parameters["readItemsSocialResponsibility"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsSocialResponsibility"]="id= fields= meta= version= "
+    operation_parameters["updateItemsSocialResponsibility"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsSocialResponsibility"]="id= fields= meta= "
+    operation_parameters["createItemsSuppliers"]="meta= "
+    operation_parameters["deleteItemsSuppliers"]=""
+    operation_parameters["deleteSingleItemsSuppliers"]="id= "
+    operation_parameters["readItemsSuppliers"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsSuppliers"]="id= fields= meta= version= "
+    operation_parameters["updateItemsSuppliers"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsSuppliers"]="id= fields= meta= "
+    operation_parameters["createItemsSurveys"]="meta= "
+    operation_parameters["deleteItemsSurveys"]=""
+    operation_parameters["deleteSingleItemsSurveys"]="id= "
+    operation_parameters["readItemsSurveys"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsSurveys"]="id= fields= meta= version= "
+    operation_parameters["updateItemsSurveys"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsSurveys"]="id= fields= meta= "
+    operation_parameters["createItemsSustainableSupplyChain"]="meta= "
+    operation_parameters["deleteItemsSustainableSupplyChain"]=""
+    operation_parameters["deleteSingleItemsSustainableSupplyChain"]="id= "
+    operation_parameters["readItemsSustainableSupplyChain"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsSustainableSupplyChain"]="id= fields= meta= version= "
+    operation_parameters["updateItemsSustainableSupplyChain"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsSustainableSupplyChain"]="id= fields= meta= "
+    operation_parameters["createItemsTaxes"]="meta= "
+    operation_parameters["deleteItemsTaxes"]=""
+    operation_parameters["deleteSingleItemsTaxes"]="id= "
+    operation_parameters["readItemsTaxes"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsTaxes"]="id= fields= meta= version= "
+    operation_parameters["updateItemsTaxes"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsTaxes"]="id= fields= meta= "
+    operation_parameters["createItemsTraining"]="meta= "
+    operation_parameters["deleteItemsTraining"]=""
+    operation_parameters["deleteSingleItemsTraining"]="id= "
+    operation_parameters["readItemsTraining"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsTraining"]="id= fields= meta= version= "
+    operation_parameters["updateItemsTraining"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsTraining"]="id= fields= meta= "
+    operation_parameters["createItemsTransactions"]="meta= "
+    operation_parameters["deleteItemsTransactions"]=""
+    operation_parameters["deleteSingleItemsTransactions"]="id= "
+    operation_parameters["readItemsTransactions"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["readSingleItemsTransactions"]="id= fields= meta= version= "
+    operation_parameters["updateItemsTransactions"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["updateSingleItemsTransactions"]="id= fields= meta= "
+    operation_parameters["getMyPermissions"]=""
+    operation_parameters["getPermission"]="id= fields= meta= "
+    operation_parameters["getPermissions"]="fields= limit= offset= meta= sort= filter= search= page= "
+    operation_parameters["createPreset"]="fields= meta= "
+    operation_parameters["deletePreset"]="id= "
+    operation_parameters["deletePresets"]=""
+    operation_parameters["getPreset"]="id= fields= meta= "
+    operation_parameters["getPresets"]="fields= limit= offset= page= sort= filter= search= meta= "
+    operation_parameters["updatePreset"]="id= fields= meta= "
+    operation_parameters["updatePresets"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["getRelation"]="id= fields= meta= "
+    operation_parameters["getRelations"]="fields= limit= offset= meta= sort= filter= search= page= "
+    operation_parameters["getRole"]="id= fields= meta= "
+    operation_parameters["getRoles"]="fields= limit= offset= meta= sort= filter= search= page= "
+    operation_parameters["schemaApply"]=""
+    operation_parameters["schemaDiff"]="force= "
+    operation_parameters["schemaSnapshot"]="export= "
+    operation_parameters["ping"]=""
+    operation_parameters["serverInfo"]="super_admin_token= "
+    operation_parameters["getSettings"]="limit= offset= meta= page= "
+    operation_parameters["getMe"]="fields= meta= "
+    operation_parameters["getUser"]="id= fields= meta= "
+    operation_parameters["getUsers"]="fields= limit= offset= meta= sort= filter= search= "
+    operation_parameters["updateLastUsedPageMe"]=""
+    operation_parameters["updateMe"]=""
+    operation_parameters["updateUser"]="id= fields= meta= "
+    operation_parameters["updateUsers"]="fields= limit= meta= offset= sort= filter= search= "
+    operation_parameters["clearCache"]=""
+    operation_parameters["export"]="collection= "
+    operation_parameters["hashGenerate"]=""
+    operation_parameters["hashVerify"]=""
+    operation_parameters["import"]="collection= "
+    operation_parameters["random"]="length= "
+    operation_parameters["sort"]="collection= "
+
+    # An associative array of possible values for enum parameters
+    declare -A operation_parameters_enum_values
+    operation_parameters_enum_values["getAsset::download"]="true false"
+    operation_parameters_enum_values["getAsset::download"]="true false"
+    operation_parameters_enum_values["getAsset::download"]="true false"
+    operation_parameters_enum_values["getAsset::download"]="true false"
+    operation_parameters_enum_values["schemaDiff::force"]="true false"
+    operation_parameters_enum_values["schemaDiff::force"]="true false"
+
+    #
+    # Check if this is OSX and use special __osx_init_completion function
+    #
+    if [[ `uname` =~ "Darwin" ]]; then
+        __osx_init_completion || return
+    else
+        _init_completion -s || return
+    fi
+
+
+    # Check if operation is already in the command line provided
+    for word in "${words[@]}"; do
+        if [[ -n $word && ${operations[$word]} ]]; then
+            operation="${word}"
+        fi
+    done
+
+    if [[ -z $operation ]]; then
+        case $prev in
+            --ciphers|--connect-timeout|-C|--continue-at|-F|--form|--form-string|\
+            --ftp-account|--ftp-alternative-to-user|-P|--ftp-port|-H|--header|-h|\
+            --help|--hostpubmd5|--keepalive-time|--krb|--limit-rate|--local-port|\
+            --mail-from|--mail-rcpt|--max-filesize|--max-redirs|-m|--max-time|\
+            --pass|--proto|--proto-redir|--proxy-user|--proxy1.0|-Q|--quote|-r|\
+            --range|-X|--request|--retry|--retry-delay|--retry-max-time|\
+            --socks5-gssapi-service|-t|--telnet-option|--tftp-blksize|-z|\
+            --time-cond|--url|-u|--user|-A|--user-agent|-V|--version|-w|\
+            --write-out|--resolve|--tlsuser|--tlspassword|--about)
+                return
+                ;;
+            -K|--config|-b|--cookie|-c|--cookie-jar|-D|--dump-header|--egd-file|\
+            --key|--libcurl|-o|--output|--random-file|-T|--upload-file|--trace|\
+            --trace-ascii|--netrc-file)
+                _filedir
+                return
+                ;;
+            --cacert|-E|--cert)
+                _filedir '@(c?(e)rt|cer|pem|der)'
+                return
+                ;;
+            --capath)
+                _filedir -d
+                return
+                ;;
+            --cert-type|--key-type)
+                COMPREPLY=( $( compgen -W 'DER PEM ENG' -- "$cur" ) )
+                return
+                ;;
+            --crlfile)
+                _filedir crl
+                return
+                ;;
+            -d|--data|--data-ascii|--data-binary|--data-urlencode)
+                if [[ $cur == \@* ]]; then
+                    cur=${cur:1}
+                    _filedir
+                    COMPREPLY=( "${COMPREPLY[@]/#/@}" )
+                fi
+                return
+                ;;
+            --delegation)
+                COMPREPLY=( $( compgen -W 'none policy always' -- "$cur" ) )
+                return
+                ;;
+            --engine)
+                COMPREPLY=( $( compgen -W 'list' -- "$cur" ) )
+                return
+                ;;
+            --ftp-method)
+                COMPREPLY=( $( compgen -W 'multicwd nocwd singlecwd' -- "$cur" ) )
+                return
+                ;;
+            --ftp-ssl-ccc-mode)
+                COMPREPLY=( $( compgen -W 'active passive' -- "$cur" ) )
+                return
+                ;;
+            --interface)
+                _available_interfaces -a
+                return
+                ;;
+            -x|--proxy|--socks4|--socks4a|--socks5|--socks5-hostname)
+                _known_hosts_real
+                return
+                ;;
+            --pubkey)
+                _filedir pub
+                return
+                ;;
+            --stderr)
+                COMPREPLY=( $( compgen -W '-' -- "$cur" ) )
+                _filedir
+                return
+                ;;
+            --tlsauthtype)
+                COMPREPLY=( $( compgen -W 'SRP' -- "$cur" ) )
+                return
+                ;;
+            --host)
+                COMPREPLY=( $( compgen -W 'http:// https://' -- "$cur" ) )
+                return
+                ;;
+            -ct|--content-type|-ac|--accept)
+                COMPREPLY=( $( compgen -W '${!mime_type_abbreviations[*]}' -- "$cur" ) )
+                return
+                ;;
+        esac
+    fi
+
+    #
+    # Complete the server address based on ~/.ssh/known_hosts
+    # and ~/.ssh/config
+    #
+    local prefix=${COMP_WORDS[COMP_CWORD-2]}
+    local colon=${COMP_WORDS[COMP_CWORD-1]}
+    if [[ "$colon" == ":" && ( $prefix == "https" || $prefix == "http" ) ]]; then
+        COMPREPLY=()
+        local comp_ssh_hosts=`[[ -f ~/.ssh/known_hosts ]] && \
+                              ( cat ~/.ssh/known_hosts | \
+                              grep '^[a-zA-Z0-9]' | \
+                              cut -f 1 -d ' ' | \
+                              sed -e s/,.*//g | \
+                              grep -v ^# | \
+                              uniq | \
+                              grep -v "\[" ) ;
+                              [[ -f ~/.ssh/config ]] && \
+                              ( cat ~/.ssh/config | \
+                              grep "^Host " | \
+                              awk '{print $2}' )`
+        COMPREPLY=( $( compgen -P '//' -W '${comp_ssh_hosts}' -- "${cur:2}") )
+        return
+    fi
+
+    #
+    # Complete the  and cURL's arguments
+    #
+    if [[ $cur == -* ]]; then
+        COMPREPLY=( $( compgen -W '$(_parse_help curl) $(_parse_help $1)' -- "$cur" ) )
+        return
+    fi
+
+    #
+    # If the argument starts with a letter this could be either an operation
+    # or an operation parameter
+    # When $cur is empty, suggest the list of operations by default
+    #
+    if [[ $cur =~ ^[A-Za-z_0-9]* ]]; then
+        # If operation has not been yet selected, suggest the list of operations
+        # otherwise suggest arguments of this operation as declared in the
+        # OpenAPI specification
+        if [[ -z $operation ]]; then
+            COMPREPLY=( $(compgen -W '${!operations[*]}' -- ${cur}) )
+        else
+            COMPREPLY=( $(compgen -W '${operation_parameters[$operation]}' -- ${cur}) )
+            compopt -o nospace
+        fi
+        return
+    fi
+
+} &&
+complete -F _ 
+
+# ex: ts=4 sw=4 et filetype=sh
